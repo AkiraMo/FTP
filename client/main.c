@@ -1,11 +1,11 @@
-#include "fun.h"
+#include "normal.h"
 
 int main(int argc,char* argv[])
 {
 	if(argc != 3)
 	{
-		printf("argc\n");
-		return -1;
+	    printf("argc\n");
+	    return -1;
 	}
 	
 	//socket
@@ -21,37 +21,34 @@ int main(int argc,char* argv[])
 	int ret;
 	ret = connect(sfd,(struct sockaddr*)&ser,sizeof(ser));
 
-	char buf[BUFFNUM] = {0};
-	int len;
-	recv_n(sfd,(char*)&len,4);
-	printf("file name len = %d\n",len);
-	recv_n(sfd,buf,len);
-	printf("file name = %s\n",buf);
-
-	int fd;
-	fd = open(buf,O_RDWR|O_CREAT,0666);
-	if(-1 == fd)
+	//输入指令
+	char input[INPUTNUM] = {0};
+	char cmd[CMDNUM] = {0};
+	char* filename = (char*)calloc(FILENAMENUM,sizeof(char));
+	int cmdid;
+input_command:
+	read(STDIN_FILENO,input,sizeof(input));
+	get_command(input,cmd,filename);
+	cmdid = command(cmd);
+	if(0 == cmdid)
 	{
-		perror("open");
-		return -1;
+		goto input_command;
 	}
+
+	//发送指令
+	send(sfd,cmd,strlen(cmd),0);
+	//接收响应
 	
-	while(1)
+	switch(cmdid)
 	{
-		recv_n(sfd,(char*)&len,4);
-		memset(buf,0,sizeof(buf));
-		if(len > 0)
-		{
-			recv_n(sfd,buf,len);
-			write(fd,buf,len);
-		}
-		else
-		{
-			break;
-		}
+		case 1:break;
+		case 2:break;
+		case 3:break;
+		case 4:break;
+		case 5:break;
+		case 6:break;
 	}
 
-	close(fd);
 	close(sfd);
 	return 0;
 }

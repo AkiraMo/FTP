@@ -1,4 +1,4 @@
-#include "fun.h"
+#include "normal.h"
 
 void send_n(int fd,char* buf,int len)
 {

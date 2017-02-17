@@ -12,14 +12,9 @@
 #include <arpa/inet.h>
 
 #define BUFFNUM 1000
-
-//子进程结构体
-typedef struct childdata
-{
-	pid_t pid;
-	int fdw;
-	int busy;
-}cd,*pcd;
+#define INPUTNUM 100
+#define CMDNUM 50
+#define FILENAMENUM 50
 
 typedef struct transferdata
 {
@@ -28,5 +23,6 @@ typedef struct transferdata
 }td,*ptd;
 
 void recv_n(int fd,char* buf,int len);
-
+int command(char* s);
+void get_command(char* s,char* s1,char* s2);
 
