@@ -16,6 +16,8 @@
 #include <pthread.h>
 
 #define BUFFNUM 1000
+#define CMDNUM 50
+#define FILENAMENUM 50
 
 typedef struct transferdata
 {
@@ -27,5 +29,8 @@ void send_file(int);
 void set_init(int,char*,char*);
 void send_n(int fd,char* buf,int len);
 void recv_n(int fd,char* buf,int len);
+int command(char* s);
+void epoll_add(int epfd, int fd, int eve,  struct epoll_event* event);
+void epoll_del(int epfd, int fd, int eve, struct epoll_event* event);
 
 #endif

@@ -22,6 +22,7 @@ typedef struct transferdata
 	char buf[BUFFNUM];
 }td,*ptd;
 
+void send_n(int fd,char* buf,int len);
 void recv_n(int fd,char* buf,int len);
 int command(char* s);
 void get_command(char* s,char* s1,char* s2);

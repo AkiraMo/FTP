@@ -9,6 +9,7 @@ void send_n(int fd,char* buf,int len)
 		pos = send(fd,buf+total,len-total,0);
 		total += pos;
 	}
+	printf("发送完毕\n");
 }
 
 void recv_n(int fd,char* buf,int len)
@@ -20,5 +21,6 @@ void recv_n(int fd,char* buf,int len)
 		pos = recv(fd,buf+total,len-total,0);
 		total += pos;
 	}
+	printf("接受完毕\n");
 }
 

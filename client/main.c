@@ -36,9 +36,38 @@ input_command:
 	}
 
 	//发送指令
-	send(sfd,cmd,strlen(cmd),0);
-	//接收响应
+	td tdcmd;
+	tdcmd.len = strlen(cmd);
+	strcpy(tdcmd.buf,cmd);
+	send_n(sfd,(char*)&tdcmd.len,4);
+	send_n(sfd,tdcmd.buf,tdcmd.len);
+
+	td tdfilename;
+	if(filename != NULL)
+	{
+		tdfilename.len = strlen(filename);
+		strcpy(tdfilename.buf,filename);
+		send_n(sfd,(char*)&tdfilename.len,4);
+		send_n(sfd,tdfilename.buf,tdfilename.len);
+	}
+	else
+	{
+		send_n(sfd,(char*)32,4);
+		send_n(sfd,NULL,32);
+	}
 	
+	//接收响应
+	char buf[BUFFNUM] = {0};
+	memset(&buf,0,sizeof(buf));
+
+	//功能
+	//1.cd 进入对应目录
+	//2.ls 列出相应的目录文件
+	//3.puts 将本地文件上传至服务器
+	//4.gets 文件名 下载服务器文件到本地
+	//5.remove 删除服务器上的文件
+	//6.pwd 显示目前所在路径
+	//其余命令不响应
 	switch(cmdid)
 	{
 		case 1:break;
@@ -47,6 +76,7 @@ input_command:
 		case 4:break;
 		case 5:break;
 		case 6:break;
+		default:goto input_command;break;
 	}
 
 	close(sfd);
