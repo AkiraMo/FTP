@@ -9,9 +9,13 @@ void console(pnode p)
 	memset(&cmd,0,sizeof(cmd));
 	memset(&filename,0,sizeof(filename));
 	recv_n(p->new_fd,(char*)&len,4);
+	printf("完成接收 %d\n",len);
 	recv_n(p->new_fd,cmd,len);
+	printf("完成接收 %s\n",cmd);
 	recv_n(p->new_fd,(char*)&len,4);
+	printf("完成接收 %d\n",len);
 	recv_n(p->new_fd,filename,len);
+	printf("完成接收 %s\n",filename);
 	printf("%s %s\n",p->cmd,p->filename);	
 	cmdid = command(p->cmd);
 	switch(cmdid)
@@ -54,7 +58,7 @@ void* threadfunc(void* p)
 			perror("epoll_wait");
 			return NULL;
 		}
-		printf("%d",ret);
+		printf("%d\n",ret);
 		if(ret > 0)
 		{
 			console(pn);	
