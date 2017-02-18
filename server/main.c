@@ -2,21 +2,35 @@
 
 void console(pnode p)
 {
-	int cmdid;
-	int len;
-	char cmd[CMDNUM],filename[FILENAMENUM];
+	int cmdid,len;
 
-	memset(&cmd,0,sizeof(cmd));
-	memset(&filename,0,sizeof(filename));
+	memset(p->cmd,0,sizeof(p->cmd));
+	memset(p->filename,0,sizeof(p->filename));
+	
 	recv_n(p->new_fd,(char*)&len,4);
 	printf("完成接收 %d\n",len);
-	recv_n(p->new_fd,cmd,len);
-	printf("完成接收 %s\n",cmd);
+	if(len > 0)
+	{
+		recv_n(p->new_fd,p->cmd,len);
+	}
+	printf("完成接收 %s\n",p->cmd);
+	
 	recv_n(p->new_fd,(char*)&len,4);
 	printf("完成接收 %d\n",len);
-	recv_n(p->new_fd,filename,len);
-	printf("完成接收 %s\n",filename);
-	printf("%s %s\n",p->cmd,p->filename);	
+	if(len > 0)
+	{
+		recv_n(p->new_fd,p->filename,len);
+	}
+	if(strcmp(p->filename,"NULL"))
+	{
+		printf("完成接收 %s\n",p->filename);
+	}
+	else
+	{
+		memset(p->filename,0,sizeof(p->filename));
+		printf("完成接收 文件名为空\n");
+	}
+
 	cmdid = command(p->cmd);
 	switch(cmdid)
 	{
@@ -52,16 +66,15 @@ void* threadfunc(void* p)
 		pthread_mutex_unlock(&pq->mutex);
 		printf("子线程已醒来\n");
 		epoll_add(epfd,pn->new_fd,EPOLLIN,&event);
-		ret = epoll_wait(epfd,&event,1,-1);
-		if(-1 == ret)
+		while(1)
 		{
-			perror("epoll_wait");
-			return NULL;
-		}
-		printf("%d\n",ret);
-		if(ret > 0)
-		{
-			console(pn);	
+			ret = epoll_wait(epfd,&event,1,-1);
+			printf("%d\n",ret);
+			if(ret > 0)
+			{
+				console(pn);	
+			}
+			break;
 		}
 		free(pn);
 	}

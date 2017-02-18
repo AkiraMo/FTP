@@ -39,25 +39,25 @@ input_command:
 	td tdcmd;
 	tdcmd.len = strlen(cmd);
 	strcpy(tdcmd.buf,cmd);
-	send_n(sfd,&tdcmd.len,4);
-	printf("%d\n",&tdcmd.len);
+	send_n(sfd,&tdcmd,4+tdcmd.len);
 	send_n(sfd,tdcmd.buf,tdcmd.len);
-	printf("%s\n",tdcmd.buf);
 
 	td tdfilename;
+	char tmp[] = "NULL";
 	if(filename != NULL)
 	{
 		tdfilename.len = strlen(filename);
 		strcpy(tdfilename.buf,filename);
-		send_n(sfd,(char*)&tdfilename.len,4);
+		send_n(sfd,&tdfilename,4+tdfilename.len);
 		send_n(sfd,tdfilename.buf,tdfilename.len);
 	}
 	else
 	{
-		send_n(sfd,(char*)32,4);
-		send_n(sfd,NULL,32);
+		send_n(sfd,(char*)8,4);
+		send_n(sfd,tmp,8);
 	}
-	goto input_command;	
+	
+
 	//接收响应
 	char buf[BUFFNUM] = {0};
 	memset(&buf,0,sizeof(buf));
