@@ -39,8 +39,7 @@ input_command:
 	td tdcmd;
 	tdcmd.len = strlen(cmd);
 	strcpy(tdcmd.buf,cmd);
-	send_n(sfd,&tdcmd,4+tdcmd.len);
-	send_n(sfd,tdcmd.buf,tdcmd.len);
+	send_n(sfd,(char*)&tdcmd,4+tdcmd.len);
 
 	td tdfilename;
 	char tmp[] = "NULL";
@@ -48,8 +47,7 @@ input_command:
 	{
 		tdfilename.len = strlen(filename);
 		strcpy(tdfilename.buf,filename);
-		send_n(sfd,&tdfilename,4+tdfilename.len);
-		send_n(sfd,tdfilename.buf,tdfilename.len);
+		send_n(sfd,(char*)&tdfilename,4+tdfilename.len);
 	}
 	else
 	{
@@ -57,7 +55,7 @@ input_command:
 		send_n(sfd,tmp,8);
 	}
 	
-
+	while(1);
 	//接收响应
 	char buf[BUFFNUM] = {0};
 	memset(&buf,0,sizeof(buf));

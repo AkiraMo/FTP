@@ -66,15 +66,11 @@ void* threadfunc(void* p)
 		pthread_mutex_unlock(&pq->mutex);
 		printf("子线程已醒来\n");
 		epoll_add(epfd,pn->new_fd,EPOLLIN,&event);
-		while(1)
+		
+		ret = epoll_wait(epfd,&event,1,-1);
+		if(ret > 0)
 		{
-			ret = epoll_wait(epfd,&event,1,-1);
-			printf("%d\n",ret);
-			if(ret > 0)
-			{
-				console(pn);	
-			}
-			break;
+			console(pn);	
 		}
 		free(pn);
 	}
