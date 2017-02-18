@@ -31,17 +31,17 @@ void console(pnode p)
 		printf("完成接收 文件名为空\n");
 	}
 
-	cmdid = command(p->cmd);
-	switch(cmdid)
-	{
-		case 1:printf("cd %s\n",p->filename);break;
-		case 2:printf("ls %s\n",p->filename);break;
-		case 3:printf("puts %s\n",p->filename);break;
-		case 4:printf("gets %s\n",p->filename);break;
-		case 5:printf("remove %s\n",p->filename);break;
-		case 6:printf("pwd %s\n",p->filename);break;
-		default:break;
-	}
+//	cmdid = command(p->cmd);
+//	switch(cmdid)
+//	{
+//		case 1:printf("cd %s\n",p->filename);break;
+//		case 2:printf("ls %s\n",p->filename);break;
+//		case 3:printf("puts %s\n",p->filename);break;
+//		case 4:printf("gets %s\n",p->filename);break;
+//		case 5:printf("remove %s\n",p->filename);break;
+//		case 6:printf("pwd %s\n",p->filename);break;
+//		default:break;
+//	}
 }
 
 void* threadfunc(void* p)
