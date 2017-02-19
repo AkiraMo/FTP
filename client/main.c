@@ -40,6 +40,7 @@ input_command:
 	tdcmd.len = strlen(cmd);
 	strcpy(tdcmd.buf,cmd);
 	send_n(sfd,(char*)&tdcmd,4+tdcmd.len);
+	printf("%d %s\n",tdcmd.len,tdcmd.buf);
 
 	td tdfilename;
 	char tmp[] = "NULL";
@@ -48,6 +49,7 @@ input_command:
 		tdfilename.len = strlen(filename);
 		strcpy(tdfilename.buf,filename);
 		send_n(sfd,(char*)&tdfilename,4+tdfilename.len);
+		printf("%d %s",tdfilename.len,tdfilename.buf);
 	}
 	else
 	{
