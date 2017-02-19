@@ -17,7 +17,7 @@ void get_command(char* s,char* s1,char* s2)
 	if(flag)
 	{
 		strcpy(s2,s+i+1);
-		s2[strlen(s)+1] = '\0';
+		s2[strlen(s2)-1] = '\0';
 	}
 	else
 	{

@@ -22,11 +22,12 @@ int main(int argc,char* argv[])
 	ret = connect(sfd,(struct sockaddr*)&ser,sizeof(ser));
 
 	//输入指令
-	char input[INPUTNUM] = {0};
-	char cmd[CMDNUM] = {0};
-	char* filename = (char*)calloc(FILENAMENUM,sizeof(char));
+	char input[INPUTNUM],cmd[CMDNUM],filename[FILENAMENUM];
 	int cmdid;
 input_command:
+	memset(input,0,sizeof(input));
+	memset(cmd,0,sizeof(cmd));
+	memset(filename,0,sizeof(filename));
 	read(STDIN_FILENO,input,sizeof(input));
 	get_command(input,cmd,filename);
 	cmdid = command(cmd);
@@ -37,27 +38,27 @@ input_command:
 
 	//发送指令
 	td tdcmd;
-	tdcmd.len = strlen(cmd);
-	strcpy(tdcmd.buf,cmd);
+	tdcmd.len = 1;
+	strcpy(tdcmd.buf,(char*)&cmdid);
 	send_n(sfd,(char*)&tdcmd,4+tdcmd.len);
-	printf("%d %s\n",tdcmd.len,tdcmd.buf);
 
 	td tdfilename;
 	char tmp[] = "NULL";
-	if(filename != NULL)
+	if(filename[0] != '\0' && filename[0] != ' ')
 	{
 		tdfilename.len = strlen(filename);
 		strcpy(tdfilename.buf,filename);
-		send_n(sfd,(char*)&tdfilename,4+tdfilename.len);
-		printf("%d %s",tdfilename.len,tdfilename.buf);
 	}
 	else
 	{
-		send_n(sfd,(char*)8,4);
-		send_n(sfd,tmp,8);
+		tdfilename.len = strlen(tmp);
+		strcpy(tdfilename.buf,tmp);
 	}
-	
-	while(1);
+	send_n(sfd,(char*)&tdfilename,4+tdfilename.len);
+	printf("已成功发送%d %s\n",cmdid,tdfilename.buf);
+	memset(&tdcmd,0,sizeof(tdcmd));
+	memset(&tdfilename,0,sizeof(tdcmd));
+
 	//接收响应
 	char buf[BUFFNUM] = {0};
 	memset(&buf,0,sizeof(buf));
@@ -78,8 +79,10 @@ input_command:
 		case 4:break;
 		case 5:break;
 		case 6:break;
-		default:goto input_command;break;
+		default:break;
 	}
+
+	goto input_command;
 
 	close(sfd);
 	return 0;

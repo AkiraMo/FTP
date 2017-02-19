@@ -2,54 +2,56 @@
 
 void console(pnode p)
 {
+
+	//接收指令
+	char filename[FILENAMENUM];
 	int cmdid,len;
+recv:
+	memset(filename,0,sizeof(filename));
+	cmdid = 0;
+	len = 0;
 
-	memset(p->cmd,0,sizeof(p->cmd));
-	memset(p->filename,0,sizeof(p->filename));
-	
 	recv_n(p->new_fd,(char*)&len,4);
-	printf("完成接收 %d\n",len);
 	if(len > 0)
 	{
-		recv_n(p->new_fd,p->cmd,len);
+		recv_n(p->new_fd,(char*)&cmdid,len);
 	}
-	printf("完成接收 %s\n",p->cmd);
+	if(cmdid < 1 && cmdid > 6)
+	{
+		goto recv;
+	}
 	
 	recv_n(p->new_fd,(char*)&len,4);
-	printf("完成接收 %d\n",len);
 	if(len > 0)
 	{
-		recv_n(p->new_fd,p->filename,len);
+		recv_n(p->new_fd,filename,len);
 	}
-	if(strcmp(p->filename,"NULL"))
-	{
-		printf("完成接收 %s\n",p->filename);
-	}
-	else
-	{
-		memset(p->filename,0,sizeof(p->filename));
-		printf("完成接收 文件名为空\n");
-	}
+	printf("完成接收%d %s\n",cmdid,filename);
 
-	cmdid = command(p->cmd);
 	switch(cmdid)
 	{
-		case 1:printf("cd %s\n",p->filename);break;
-		case 2:printf("ls %s\n",p->filename);break;
-		case 3:printf("puts %s\n",p->filename);break;
-		case 4:printf("gets %s\n",p->filename);break;
-		case 5:printf("remove %s\n",p->filename);break;
+		case 1:printf("cd %s\n",filename);break;
+		case 2:printf("ls %s\n",filename);break;
+		case 3:printf("puts %s\n",filename);break;
+		case 4:printf("gets %s\n",filename);break;
+		case 5:printf("remove %s\n",filename);break;
 		case 6:printf("pwd\n");break;
 		default:break;
+	}
+
+	if(1)
+	{
+		goto recv;
 	}
 }
 
 void* threadfunc(void* p)
 {
-	printf("子线程正在运行\n");
+	printf("子线程创建成功\n");
 	pfac pf = (pfac)p;
 	pque pq = &pf->que;
 	pnode pn;
+
 	while(1)
 	{
 		pthread_mutex_lock(&pq->mutex);
@@ -60,7 +62,10 @@ void* threadfunc(void* p)
 		que_get(pq,&pn);
 		pthread_mutex_unlock(&pq->mutex);
 		printf("子线程已醒来\n");
-		console(pn);	
+		while(1)
+		{
+			console(pn);
+		}
 		free(pn);
 	}
 }

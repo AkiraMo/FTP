@@ -6,8 +6,6 @@
 typedef struct list
 {
 	int new_fd;
-	char cmd[CMDNUM];
-	char filename[FILENAMENUM];
 	struct list* pnext;
 }node,*pnode;
 
