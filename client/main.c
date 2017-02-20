@@ -2,7 +2,7 @@
 
 int main(int argc,char* argv[])
 {
-	if(argc != 3)
+	if(argc != 4)
 	{
 	    printf("argc\n");
 	    return -1;
@@ -21,6 +21,18 @@ int main(int argc,char* argv[])
 	int ret;
 	ret = connect(sfd,(struct sockaddr*)&ser,sizeof(ser));
 
+	//发送用户名
+	char usr[USRNUM] = {0}, pwd[PWDNUM] = {0};
+	strcpy(usr,argv[3]);
+	td tdusr;
+	tdusr.len = strlen(usr);
+	strcpy(tdusr.buf,usr);
+
+	strcpy(pwd,"NULL");
+
+	send_n(sfd,(char*)&tdusr,4+tdusr.len);
+
+
 	//输入指令
 	char input[INPUTNUM],cmd[CMDNUM],filename[FILENAMENUM];
 	int cmdid;
@@ -35,7 +47,17 @@ input_command:
 	{
 		goto input_command;
 	}
-
+	char path[] = ".";
+	int ret1;
+	ret1 = filename_check(path,filename);
+	if(0 == ret1)
+	{
+		printf("文件存在\n");
+	}
+	else
+	{
+		printf("文件不存在\n");
+	}
 	//发送指令
 	td tdcmd;
 	tdcmd.len = 1;

@@ -10,11 +10,14 @@
 #include <sys/epoll.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <dirent.h>
 
 #define BUFFNUM 1000
-#define INPUTNUM 100
-#define CMDNUM 50
-#define FILENAMENUM 50
+#define INPUTNUM 50
+#define CMDNUM 10
+#define FILENAMENUM 20
+#define USRNUM 20
+#define PWDNUM 20
 
 typedef struct transferdata
 {
@@ -26,4 +29,5 @@ void send_n(int fd,char* buf,int len);
 void recv_n(int fd,char* buf,int len);
 int command(char* s);
 void get_command(char* s,char* s1,char* s2);
+int filename_check(char* path, char* file);
 
