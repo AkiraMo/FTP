@@ -16,6 +16,7 @@
 #include <pthread.h>
 #include <errno.h>
 #include <dirent.h> 
+#include <math.h>
 
 #define BUFFNUM 1000
 #define CMDNUM 20
@@ -37,5 +38,8 @@ void recv_n(int fd,char* buf,int len);
 int command(char* s);
 void epoll_add(int epfd, int fd, int eve,  struct epoll_event* event);
 void epoll_del(int epfd, int fd, int eve, struct epoll_event* event);
-
+int filename_check(char* path, char* file);
+void mycd(char* path,char* filepath);
+void myls(char* rootpath,char* filepath);
+void mypwd(char* rootpath,char* path);
 #endif

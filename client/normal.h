@@ -18,6 +18,7 @@
 #define FILENAMENUM 20
 #define USRNUM 20
 #define PWDNUM 20
+#define PATH "."
 
 typedef struct transferdata
 {

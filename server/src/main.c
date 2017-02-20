@@ -2,9 +2,8 @@
 
 void console(pnode p)
 {
-	int len,ret;
+	int len,ret,fileflag;
 	//接收用户名并创建对应路径
-	int fd;
 	char usr[USRNUM] = {0};
 	recv_n(p->new_fd,(char*)&len,4);
 	if(len > 0)
@@ -17,6 +16,8 @@ void console(pnode p)
 	struct stat file_stat;
 	char path[PATHNUM] = PATH;
 	strcat(path,usr);
+	char rootpath[strlen(path)];
+	strcpy(rootpath,path);
 	ret = stat(path,&file_stat);
 	if(ret < 0)
 	{
@@ -31,7 +32,6 @@ void console(pnode p)
 			printf("创建文件夹成功\n");
 		}
 	}
-
 
 	//接收指令
 	char filename[FILENAMENUM];
@@ -60,16 +60,24 @@ recv:
 	{
 		recv_n(p->new_fd,filename,len);
 	}
+	if(!strcmp(filename,"NULL"))
+	{
+		fileflag = -1;
+	}
+	else
+	{
+		fileflag = 0;
+	}
 	printf("完成接收%d %s\n",cmdid,filename);
 
 	switch(cmdid)
 	{
-		case 1:printf("cd %s\n",filename);break;
-		case 2:printf("ls %s\n",filename);break;
+		case 1:mycd(path,filename);break;
+		case 2:myls(path,filename);break;
 		case 3:printf("puts %s\n",filename);break;
 		case 4:printf("gets %s\n",filename);break;
 		case 5:printf("remove %s\n",filename);break;
-		case 6:printf("pwd\n");break;
+		case 6:mypwd(rootpath,path);break;
 		default:break;
 	}
 	goto recv;

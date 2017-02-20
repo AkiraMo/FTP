@@ -18,8 +18,7 @@ int main(int argc,char* argv[])
 	ser.sin_port = htons(atoi(argv[2]));
 
 	//connect
-	int ret;
-	ret = connect(sfd,(struct sockaddr*)&ser,sizeof(ser));
+	connect(sfd,(struct sockaddr*)&ser,sizeof(ser));
 
 	//发送用户名
 	char usr[USRNUM] = {0}, pwd[PWDNUM] = {0};
@@ -34,8 +33,8 @@ int main(int argc,char* argv[])
 
 
 	//输入指令
-	char input[INPUTNUM],cmd[CMDNUM],filename[FILENAMENUM];
-	int cmdid;
+	char input[INPUTNUM],cmd[CMDNUM],filename[FILENAMENUM],path[200];
+	int cmdid,fileflag;
 input_command:
 	memset(input,0,sizeof(input));
 	memset(cmd,0,sizeof(cmd));
@@ -47,17 +46,17 @@ input_command:
 	{
 		goto input_command;
 	}
-	char path[] = ".";
-	int ret1;
-	ret1 = filename_check(path,filename);
-	if(0 == ret1)
+
+	strcpy(path,PATH);
+	if(!filename_check(path,filename))
 	{
-		printf("文件存在\n");
+		fileflag = 0;
 	}
 	else
 	{
-		printf("文件不存在\n");
+		fileflag = -1;
 	}
+
 	//发送指令
 	td tdcmd;
 	tdcmd.len = 1;
@@ -77,13 +76,8 @@ input_command:
 		strcpy(tdfilename.buf,tmp);
 	}
 	send_n(sfd,(char*)&tdfilename,4+tdfilename.len);
-	printf("已成功发送%d %s\n",cmdid,tdfilename.buf);
 	memset(&tdcmd,0,sizeof(tdcmd));
 	memset(&tdfilename,0,sizeof(tdcmd));
-
-	//接收响应
-	char buf[BUFFNUM] = {0};
-	memset(&buf,0,sizeof(buf));
 
 	//功能
 	//1.cd 进入对应目录

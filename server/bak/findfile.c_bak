@@ -1,0 +1,54 @@
+#include <sys/types.h>
+#include <dirent.h>
+#include <string.h>
+#include <stdio.h>
+
+void printfile(char *path,char *file)
+{
+	DIR *dir;
+	struct dirent *p;
+	char buf[200] = {0};
+
+	dir = opendir(path);
+	if(NULL == dir)
+	{
+		printf("opendir\n");
+		return ;
+	}
+
+	while((p = readdir(dir)) != NULL)
+	{
+		if(!strcmp(p->d_name,".") || !strcmp(p->d_name,".."))
+		{
+			continue;
+		}	
+		if(!strcmp(p->d_name, file))
+		{
+			printf("%s/%s\n",path,file);
+		}
+		if(4 == p->d_type)
+		{
+			if(!strcmp(path,"/"))
+			{
+				sprintf(buf,"%s%s",path,p->d_name);
+	
+			}
+			else
+			{	
+				sprintf(buf,"%s/%s",path,p->d_name);
+			}
+			printfile(buf,file);
+		}
+	}
+	closedir(dir);
+}
+int main(int argc,char *argv[])
+{
+	if(argc != 3)
+	{
+		printf("parameter error\n");
+		return -1;
+	}
+	printfile(argv[1],argv[2]);
+	return 0;
+}
