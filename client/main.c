@@ -1,7 +1,20 @@
 #include "normal.h"
 
+int sfd;
+
+void sig(int signum)
+{
+	td tdsig;
+	memset(&tdsig,0,sizeof(tdsig));
+	tdsig.len = 0;
+	send_n(sfd,(char*)&tdsig,4+tdsig.len);
+	close(sfd);
+	exit(0);
+}
+
 int main(int argc,char* argv[])
 {
+	signal(SIGINT,sig);
 	if(argc != 4)
 	{
 	    printf("argc\n");
@@ -9,7 +22,6 @@ int main(int argc,char* argv[])
 	}
 	
 	//socket
-	int sfd;
 	sfd = socket(AF_INET,SOCK_STREAM,0);
 	struct sockaddr_in ser;
 	memset(&ser,0,sizeof(ser));
@@ -35,6 +47,8 @@ int main(int argc,char* argv[])
 	//输入指令
 	char input[INPUTNUM],cmd[CMDNUM],filename[FILENAMENUM],path[200];
 	int cmdid,fileflag;
+    char buf[BUFFNUM] = {0};
+
 input_command:
 	memset(input,0,sizeof(input));
 	memset(cmd,0,sizeof(cmd));
@@ -79,6 +93,9 @@ input_command:
 	memset(&tdcmd,0,sizeof(tdcmd));
 	memset(&tdfilename,0,sizeof(tdcmd));
 
+	memset(&buf,0,sizeof(buf));
+	int len = 0;
+
 	//功能
 	//1.cd 进入对应目录
 	//2.ls 列出相应的目录文件
@@ -90,16 +107,16 @@ input_command:
 	switch(cmdid)
 	{
 		case 1:break;
-		case 2:break;
+		case 2:recv_n(sfd,(char*)&len,4);recv_n(sfd,buf,len);break;
 		case 3:break;
 		case 4:break;
 		case 5:break;
-		case 6:break;
+		case 6:recv_n(sfd,(char*)&len,4);recv_n(sfd,buf,len);break;
 		default:break;
 	}
+	printf("%s",buf);
 
 	goto input_command;
 
-	close(sfd);
 	return 0;
 }

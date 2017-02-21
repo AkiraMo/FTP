@@ -34,7 +34,7 @@ void console(pnode p)
 	}
 
 	//接收指令
-	char filename[FILENAMENUM];
+	char filename[FILENAMENUM],out[BUFFNUM];
 	int cmdid;
 recv:
 	memset(filename,0,sizeof(filename));
@@ -70,16 +70,18 @@ recv:
 	}
 	printf("完成接收%d %s\n",cmdid,filename);
 
+	memset(&out,0,sizeof(out));
 	switch(cmdid)
 	{
-		case 1:mycd(path,filename);break;
-		case 2:myls(path,filename);break;
+		case 1:mycd(strlen(rootpath),path,filename);break;
+		case 2:myls(path,filename,out);send_msg(p->new_fd,out);break;
 		case 3:printf("puts %s\n",filename);break;
 		case 4:printf("gets %s\n",filename);break;
 		case 5:printf("remove %s\n",filename);break;
-		case 6:mypwd(rootpath,path);break;
+		case 6:mypwd(rootpath,path,out);send_msg(p->new_fd,out);break;
 		default:break;
 	}
+
 	goto recv;
 exit:
 	printf("客户端断开连接\n");
@@ -102,10 +104,7 @@ void* threadfunc(void* p)
 		que_get(pq,&pn);
 		pthread_mutex_unlock(&pq->mutex);
 		printf("子线程已醒来\n");
-		while(1)
-		{
-			console(pn);
-		}
+		console(pn);
 		free(pn);
 	}
 }

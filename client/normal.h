@@ -11,6 +11,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <dirent.h>
+#include <signal.h>
 
 #define BUFFNUM 1000
 #define INPUTNUM 50

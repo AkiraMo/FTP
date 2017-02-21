@@ -23,5 +23,4 @@ void recv_file(int sfd)
 			break;
 		}
 	}
-	close(fd);
 }

@@ -1,14 +1,17 @@
 #include "../lib/normal.h"
 
-void mycd(char* path,char* filepath)
+void mycd(int rootlen,char* path,char* filepath)
 {
 	char sprit[2] = "/";
 	int i;
 	if(!strcmp(filepath,".."))
 	{
-		for(i = strlen(path); path[i] != '/'; i--)
+		if(strlen(path) > (size_t)rootlen)
 		{
-			path[i] = '\0';
+			for(i = strlen(path); path[i] != '/'; i--)
+			{
+				path[i] = '\0';
+			}
 		}
 	}
 	else if(!filename_check(path,filepath))

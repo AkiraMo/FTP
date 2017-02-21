@@ -1,6 +1,6 @@
 #include "../lib/normal.h"
 
-void printfls(char* path)
+void printfls(char* path,char* out)
 {
 	DIR *dir;
 	struct dirent *p;
@@ -8,7 +8,9 @@ void printfls(char* path)
 	mode_t mode;
 	double type;
 	int b_mode[16],i;
+	char outbuf[PATHNUM];
 
+	printf("%s\n",path);
 	dir = opendir(path);
 	if(NULL == dir)
 	{
@@ -35,16 +37,19 @@ void printfls(char* path)
 		{
 			type += b_mode[i] * pow(2,i+1);
 		}
-		printf("%d	%s	%ld\n",(int)type,p->d_name,buf.st_size);
+		memset(outbuf,0,sizeof(buf));
+		sprintf(outbuf,"%d	%s	%ld\n",(int)type,p->d_name,buf.st_size);
+		strcat(out,outbuf);
 	}
+	closedir(dir);
 }
 
-void myls(char* rootpath,char* filepath)
+void myls(char* rootpath,char* filepath,char* out)
 {
 	char path[PATHNUM] = {0};
 	if(!strcmp(filepath,"NULL"))
 	{
-		strcpy(path,".");
+		strcpy(path,rootpath);
 	}
 	else if(!filename_check(rootpath,filepath))
 	{
@@ -55,5 +60,5 @@ void myls(char* rootpath,char* filepath)
 		printf("路径不存在\n");
 		return;
 	}
-	printfls(path);
+	printfls(path,out);
 }

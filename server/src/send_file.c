@@ -1,8 +1,7 @@
 #include "../lib/normal.h"
 
-void send_file(int new_fd)
+void send_file(int new_fd,char* filename)
 {
-	char filename[] = "file";
 	td t;
 	memset(&t,0,sizeof(t));
 	t.len = strlen(filename);
@@ -21,6 +20,5 @@ void send_file(int new_fd)
 	}
 	t.len = 0;
 	send_n(new_fd,(char*)&t.len,4);
-	close(new_fd);
 	printf("文件传输完成\n");
 }
