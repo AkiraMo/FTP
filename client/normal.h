@@ -32,4 +32,6 @@ void recv_n(int fd,char* buf,int len);
 int command(char* s);
 void get_command(char* s,char* s1,char* s2);
 int filename_check(char* path, char* file);
+void send_file(int new_fd,char* filename);
+void recv_file(int sfd);
 

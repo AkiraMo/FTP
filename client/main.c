@@ -66,10 +66,6 @@ input_command:
 	{
 		fileflag = 0;
 	}
-	else
-	{
-		fileflag = -1;
-	}
 
 	//发送指令
 	td tdcmd;
@@ -107,14 +103,13 @@ input_command:
 	switch(cmdid)
 	{
 		case 1:break;
-		case 2:recv_n(sfd,(char*)&len,4);recv_n(sfd,buf,len);break;
-		case 3:break;
-		case 4:break;
+		case 2:recv_n(sfd,(char*)&len,4);recv_n(sfd,buf,len);printf("%s",buf);break;
+		case 3:send_file(sfd,filename);break;
+		case 4:recv_file(sfd);break;
 		case 5:break;
-		case 6:recv_n(sfd,(char*)&len,4);recv_n(sfd,buf,len);break;
+		case 6:recv_n(sfd,(char*)&len,4);recv_n(sfd,buf,len);printf("%s\n",buf);break;
 		default:break;
 	}
-	printf("%s",buf);
 
 	goto input_command;
 

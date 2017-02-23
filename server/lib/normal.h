@@ -31,7 +31,8 @@ typedef struct transferdata
 	char buf[BUFFNUM];
 }td,*ptd;
 
-void send_file(int,char* filename);
+void send_file(int,char*,char*);
+void recv_file(int,char*);
 void set_init(int,char*,char*);
 void send_n(int fd,char* buf,int len);
 void recv_n(int fd,char* buf,int len);
@@ -42,5 +43,6 @@ int filename_check(char* path, char* file);
 void mycd(int rootlen, char* path,char* filepath);
 void myls(char* rootpath,char* filepath,char* out);
 void mypwd(char* rootpath,char* path,char* out);
+void myremove(char* path,char* filename);
 void send_msg(int fd,char* out);
 #endif

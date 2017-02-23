@@ -1,8 +1,7 @@
 #include "normal.h"
 
-void send_file(int new_fd)
+void send_file(int new_fd,char* filename)
 {
-	char filename[] = "file";
 	td t;
 	memset(&t,0,sizeof(t));
 	t.len = strlen(filename);

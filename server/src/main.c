@@ -75,9 +75,9 @@ recv:
 	{
 		case 1:mycd(strlen(rootpath),path,filename);break;
 		case 2:myls(path,filename,out);send_msg(p->new_fd,out);break;
-		case 3:printf("puts %s\n",filename);break;
-		case 4:printf("gets %s\n",filename);break;
-		case 5:printf("remove %s\n",filename);break;
+		case 3:recv_file(p->new_fd,path);break;
+		case 4:send_file(p->new_fd,filename,path);break;
+		case 5:myremove(path,filename);break;
 		case 6:mypwd(rootpath,path,out);send_msg(p->new_fd,out);break;
 		default:break;
 	}

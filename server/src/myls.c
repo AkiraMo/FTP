@@ -5,12 +5,12 @@ void printfls(char* path,char* out)
 	DIR *dir;
 	struct dirent *p;
 	struct stat buf;
-	mode_t mode;
+	mode_t  mode;
 	double type;
-	int b_mode[16],i;
+	int b_mode[16],i,ret;
 	char outbuf[PATHNUM];
+	char pathbuf[PATHNUM];
 
-	printf("%s\n",path);
 	dir = opendir(path);
 	if(NULL == dir)
 	{
@@ -21,7 +21,14 @@ void printfls(char* path,char* out)
 	while((p = readdir(dir)) != NULL)
 	{
 		memset(&buf,0,sizeof(buf));
-		stat(p->d_name,&buf);
+		memset(&pathbuf,0,sizeof(pathbuf));
+		sprintf(pathbuf,"%s/%s",path,p->d_name);
+		ret = stat(pathbuf,&buf);
+		if(-1 == ret)
+		{
+			perror("stat");
+			return;
+		}
 		if(!strcmp(p->d_name,".") || !strcmp(p->d_name,".."))
 		{
 			continue;
@@ -37,7 +44,7 @@ void printfls(char* path,char* out)
 		{
 			type += b_mode[i] * pow(2,i+1);
 		}
-		memset(outbuf,0,sizeof(buf));
+		memset(outbuf,0,sizeof(outbuf));
 		sprintf(outbuf,"%d	%s	%ld\n",(int)type,p->d_name,buf.st_size);
 		strcat(out,outbuf);
 	}

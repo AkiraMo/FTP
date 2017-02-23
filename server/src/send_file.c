@@ -1,6 +1,6 @@
 #include "../lib/normal.h"
 
-void send_file(int new_fd,char* filename)
+void send_file(int new_fd,char* filename,char* path)
 {
 	td t;
 	memset(&t,0,sizeof(t));
@@ -8,7 +8,9 @@ void send_file(int new_fd,char* filename)
 	strcpy(t.buf,filename);
 	send_n(new_fd,(char*)&t,4+t.len);
 	int fd;
-	fd = open(filename,O_RDONLY);
+	strcat(path,"/");
+	strcat(path,filename);
+	fd = open(path,O_RDONLY);
 	if(-1 == fd)
 	{
 		perror("open");

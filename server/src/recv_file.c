@@ -1,5 +1,5 @@
 #include "../lib/normal.h"
-void recv_file(int sfd)
+void recv_file(int sfd,char* path)
 {
 	char buf[BUFFNUM] = {0};
 	int len;
@@ -7,7 +7,9 @@ void recv_file(int sfd)
 	recv_n(sfd,buf,len);
 
 	int fd;
-	fd = open(buf,O_RDWR|O_CREAT,0666);
+	strcat(path,"/");
+	strcat(path,buf);
+	fd = open(path,O_RDWR|O_CREAT,0666);
 	
 	while(1)
 	{

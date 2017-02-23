@@ -6,5 +6,4 @@ void mypwd(char* rootpath,char* path,char* out)
 	int i;
 	i = strlen(path) - strlen(rootpath) - 1;
 	strcat(out,path+(strlen(path) - i));
-	printf("%s\n",out);
 }
