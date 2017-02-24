@@ -20,6 +20,5 @@ void send_file(int new_fd,char* filename)
 	}
 	t.len = 0;
 	send_n(new_fd,(char*)&t.len,4);
-	close(new_fd);
 	printf("文件传输完成\n");
 }

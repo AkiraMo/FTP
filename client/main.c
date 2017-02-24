@@ -9,6 +9,7 @@ void sig(int signum)
 	tdsig.len = 0;
 	send_n(sfd,(char*)&tdsig,4+tdsig.len);
 	close(sfd);
+	system("clear");
 	exit(0);
 }
 
@@ -20,7 +21,8 @@ int main(int argc,char* argv[])
 	    printf("argc\n");
 	    return -1;
 	}
-	
+
+	system("clear");
 	//socket
 	sfd = socket(AF_INET,SOCK_STREAM,0);
 	struct sockaddr_in ser;
@@ -54,6 +56,7 @@ input_command:
 	memset(cmd,0,sizeof(cmd));
 	memset(filename,0,sizeof(filename));
 	read(STDIN_FILENO,input,sizeof(input));
+	system("clear");
 	get_command(input,cmd,filename);
 	cmdid = command(cmd);
 	if(0 == cmdid)

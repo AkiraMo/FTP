@@ -23,4 +23,5 @@ void recv_file(int sfd)
 			break;
 		}
 	}
+	printf("文件接收完成\n");
 }

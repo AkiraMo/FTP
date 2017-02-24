@@ -48,7 +48,8 @@ recv:
 	}
 	else if(0 == len)
 	{
-		goto exit;
+		close(p->new_fd);
+		printf("客户端已断开连接\n");
 	}
 	if(cmdid < 1 && cmdid > 6)
 	{
@@ -81,10 +82,7 @@ recv:
 		case 6:mypwd(rootpath,path,out);send_msg(p->new_fd,out);break;
 		default:break;
 	}
-
 	goto recv;
-exit:
-	printf("客户端断开连接\n");
 }
 
 void* threadfunc(void* p)

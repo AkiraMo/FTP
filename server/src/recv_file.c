@@ -7,9 +7,11 @@ void recv_file(int sfd,char* path)
 	recv_n(sfd,buf,len);
 
 	int fd;
-	strcat(path,"/");
-	strcat(path,buf);
-	fd = open(path,O_RDWR|O_CREAT,0666);
+	char pathbuf[PATHNUM];
+	strcpy(pathbuf,path);
+	strcat(pathbuf,"/");
+	strcat(pathbuf,buf);
+	fd = open(pathbuf,O_RDWR|O_CREAT,0666);
 	
 	while(1)
 	{
@@ -26,4 +28,5 @@ void recv_file(int sfd,char* path)
 		}
 	}
 	close(fd);
+	printf("文件接收完成\n");
 }

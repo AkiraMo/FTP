@@ -8,8 +8,10 @@ void send_file(int new_fd,char* filename,char* path)
 	strcpy(t.buf,filename);
 	send_n(new_fd,(char*)&t,4+t.len);
 	int fd;
-	strcat(path,"/");
-	strcat(path,filename);
+	char pathbuf[PATHNUM];
+	strcpy(pathbuf,path);
+	strcat(pathbuf,"/");
+	strcat(pathbuf,filename);
 	fd = open(path,O_RDONLY);
 	if(-1 == fd)
 	{
