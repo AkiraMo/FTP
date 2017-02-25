@@ -12,12 +12,8 @@ void send_file(int new_fd,char* filename,char* path)
 	strcpy(pathbuf,path);
 	strcat(pathbuf,"/");
 	strcat(pathbuf,filename);
-	fd = open(path,O_RDONLY);
-	if(-1 == fd)
-	{
-		perror("open");
-		return;
-	}
+	fd = open(pathbuf,O_RDONLY);
+
 	while(memset(&t,0,sizeof(t)),(t.len = read(fd,t.buf,sizeof(t.buf))) > 0)
 	{
 		send_n(new_fd,(char*)&t,4+t.len);

@@ -1,4 +1,4 @@
 server:main.c
-	gcc -g *.c -o server -lpthread -lm
+	gcc -g *.c -o ../bin/server -lpthread -lm
 clean:
-	rm -rf server
+	rm -rf ../bin/server

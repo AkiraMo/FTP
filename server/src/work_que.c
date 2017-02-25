@@ -2,8 +2,8 @@
 
 void que_init(pque q)
 {
+	memset(q,0,sizeof(que_t));
 	pthread_mutex_init(&q->mutex,NULL);
-	q->size = 0;
 	printf("队列初始化完成\n");
 }
 
@@ -31,5 +31,9 @@ void que_get(pque q,pnode* p)
 {
 	*p = q->phead;
 	q->phead = q->phead->pnext;
+	if(q->phead == NULL)
+	{
+		q->ptail = NULL;
+	}
 	(q->size)--;
 }

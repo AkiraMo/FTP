@@ -35,3 +35,4 @@ int filename_check(char* path, char* file);
 void send_file(int new_fd,char* filename);
 void recv_file(int sfd);
 
+#define PATHNUM 200

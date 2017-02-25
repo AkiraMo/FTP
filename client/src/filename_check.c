@@ -1,4 +1,4 @@
-#include "normal.h"
+#include "../lib/normal.h"
 
 int filename_check(char* path, char* file)
 {

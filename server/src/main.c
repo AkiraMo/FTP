@@ -61,14 +61,7 @@ recv:
 	{
 		recv_n(p->new_fd,filename,len);
 	}
-	if(!strcmp(filename,"NULL"))
-	{
-		fileflag = -1;
-	}
-	else
-	{
-		fileflag = 0;
-	}
+	
 	printf("完成接收%d %s\n",cmdid,filename);
 
 	memset(&out,0,sizeof(out));
@@ -104,6 +97,7 @@ void* threadfunc(void* p)
 		printf("子线程已醒来\n");
 		console(pn);
 		free(pn);
+		pn = NULL;
 	}
 }
 

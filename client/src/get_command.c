@@ -1,4 +1,4 @@
-#include "normal.h"
+#include "../lib/normal.h"
 
 void get_command(char* s,char* s1,char* s2)
 {

@@ -1,4 +1,4 @@
-#include "normal.h"
+#include "../lib/normal.h"
 
 int sfd;
 
